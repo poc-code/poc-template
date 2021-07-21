@@ -26,16 +26,21 @@ namespace Poc_Template_Integration_Test.Controllers
         }
 
         [Fact]
-        public async Task BuscarTodos_HttpStatusCodeUnauthorizedTestAsync()
+        public async Task BuscarTodos_HttpStatusCodeOkTestAsync()
         {
-            var response = await _httpClient.GetAsync("/api/v1/clientes");
-            var valor = response.Content.ReadAsStringAsync().Result;
-            valor.Should().Contain("endereco");//verifica se no json de retorno possui o parametro "endereco"
+            var stream = string.Empty;
+            var response = await _httpClient.GetAsync("/api/v1/clientes",HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+            if (response.Content is object)
+            {
+                stream = response.Content.ReadAsStringAsync().Result;
+            }
+            stream.Should().Contain("endereco");//verifica se no json de retorno possui o parametro "endereco"
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
-        public async Task BuscarPorId_HttpStatusCodeUnauthorizedTestAsync()
+        public async Task BuscarPorId_HttpStatusCodeOkTestAsync()
         {
             var id = 1;
 
@@ -51,7 +56,7 @@ namespace Poc_Template_Integration_Test.Controllers
         }
 
         [Fact]
-        public async Task Post_HttpStatusCodeUnauthorizedTestAsync()
+        public async Task Post_HttpStatusCodeCreateTestAsync()
         {
             var Cliente = _autoFaker.Generate<ClienteEndereco>();
             var param = new StringContent(JsonSerializer.Serialize(Cliente), Encoding.UTF8, "application/json");
@@ -62,7 +67,7 @@ namespace Poc_Template_Integration_Test.Controllers
         }
 
         [Fact]
-        public async Task Put_HttpStatusCodeUnauthorizedTestAsync()
+        public async Task Put_HttpStatusCodeNoContentTestAsync()
         {
             var id = 1;
             var Cliente = ClienteMock.ClienteViewModelFaker.Generate();
@@ -74,7 +79,7 @@ namespace Poc_Template_Integration_Test.Controllers
         }
 
         [Fact]
-        public async Task Delete_HttpStatusCodeUnauthorizedTestAsync()
+        public async Task Delete_HttpStatusCodeNoContentTestAsync()
         {
             var id = 1;
             var response = await _httpClient.DeleteAsync($"/api/v1/clientes/{id}");

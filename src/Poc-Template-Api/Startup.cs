@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using Poc_Template_Api.Extensions;
+using Poc_Template_Api.Middlewares;
 
 namespace Poc_Template_Api
 {
@@ -56,10 +57,12 @@ namespace Poc_Template_Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Poc_Template v1"));
             }
 
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseResponseCompression();
+            app.UseMiddleware<ResponseTimeMiddleware>();
 
             app.UseCors(builder => builder
              .SetIsOriginAllowedToAllowWildcardSubdomains()

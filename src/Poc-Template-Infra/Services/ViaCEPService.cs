@@ -17,10 +17,16 @@ namespace Poc_Template_Infra.Services
 
         public async Task<ViaCEP> GetByCEPAsync(string cep)
         {
-            var response = await _httpClient.GetAsync($"{cep}/json");
-            var stringResponse = await response.Content.ReadAsStringAsync();
+            ViaCEP data = null;
+            var response = await _httpClient.GetAsync($"{cep}/json",HttpCompletionOption.ResponseContentRead);
+            response.EnsureSuccessStatusCode();
+            if (response.Content is object)
+            {
+                var stream = await response.Content.ReadAsStringAsync();
+                data = JsonSerializer.Deserialize<ViaCEP>(stream);
+            }
 
-            return JsonSerializer.Deserialize<ViaCEP>(stringResponse);
+            return data;
         }
     }
 }
