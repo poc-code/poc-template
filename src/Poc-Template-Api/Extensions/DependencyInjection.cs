@@ -23,6 +23,7 @@ namespace Poc_Template_Api.Extensions
         private static void AddServices(IServiceCollection services)
         {
             services.AddScoped<IClienteService, ClienterService>();
+            services.AddScoped<IDiagnosticoAplicacaoService, DiagnosticoAplicacaoService>();
         }
 
         private static void AddRepository(IServiceCollection services)

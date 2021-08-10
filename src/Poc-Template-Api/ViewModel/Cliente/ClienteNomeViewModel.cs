@@ -12,7 +12,7 @@ namespace Poc_Template_Api.ViewModel.Customer
             Nome = nome;
         }
 
-        [FromRoute(Name = "name")]
+        [FromRoute(Name = "nome")]
         [Required(ErrorMessage = "Nome é obrigatório")]
         public string Nome { get; set; }
     }

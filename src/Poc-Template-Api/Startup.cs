@@ -10,9 +10,11 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using Poc_Template_Api.Extensions;
 using Poc_Template_Api.Middlewares;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Poc_Template_Api
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)

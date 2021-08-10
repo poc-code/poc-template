@@ -51,12 +51,12 @@ namespace Poc_Template_Api.Controllers
         /// </summary>
         /// <param name="customer">Parâmetro "nome" do cliente.</param>
         /// <returns>Cliente.</returns>
-        [HttpGet("name/{name}")]
+        [HttpGet("nome/{nome}")]
         public async Task<ActionResult<ClienteEnderecoViewModel>> GetByName([FromQuery] ClienteNomeViewModel customer)
         {
             var customerVM = await _clienteService.BuscarEnderecoPorNomeAsync(customer);
 
-            if (customerVM == null)
+            if (customerVM is null)
             {
                 return NotFound();
             }
@@ -72,11 +72,6 @@ namespace Poc_Template_Api.Controllers
         [HttpPost]
         public async Task<ActionResult<ClienteViewModel>> PostCustomer([FromBody] ClienteViewModel customer)
         {
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
             return Created(nameof(GetByName), await _clienteService.AdicionarAsync(customer));
         }
 

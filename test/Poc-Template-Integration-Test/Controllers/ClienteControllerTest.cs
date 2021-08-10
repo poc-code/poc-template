@@ -1,6 +1,7 @@
 ﻿using AutoBogus;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Moq;
 using Poc_Template_Api;
 using Poc_Template_Api.ViewModel.Customer;
 using Poc_Template_Core_Test.Mock;
@@ -53,6 +54,32 @@ namespace Poc_Template_Integration_Test.Controllers
             var objeto = JsonSerializer.Deserialize<ClienteEnderecoViewModel>(jsonString, options);
             objeto.Should().BeAssignableTo<ClienteEnderecoViewModel>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task BuscarPorId_HttpStatusCodeNoContentTestAsync()
+        {
+            var id = 10;
+
+            var response = await _httpClient.GetAsync($"/api/v1/clientes/{id}");
+            var jsonString = response.Content.ReadAsStringAsync().Result;
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var objeto = JsonSerializer.Deserialize<ClienteEnderecoViewModel>(jsonString, options);
+            objeto.Should().BeAssignableTo<ClienteEnderecoViewModel>();
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task BuscarPorNome_HttpStatusCodeNotFoundTestAsync()
+        {
+            var nome = "Meu Teste";
+
+            var response = await _httpClient.GetAsync($"api/v1/clientes/nome/{nome}");
+            
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact]
