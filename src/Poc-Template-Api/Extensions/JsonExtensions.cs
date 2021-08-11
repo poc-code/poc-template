@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
 namespace Poc_Template_Api.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static partial class JsonExtensions
     {
         public static T ToObject<T>(this JsonElement element, JsonSerializerOptions options = null)

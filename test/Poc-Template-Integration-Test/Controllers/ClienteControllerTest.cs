@@ -36,7 +36,7 @@ namespace Poc_Template_Integration_Test.Controllers
             {
                 stream = response.Content.ReadAsStringAsync().Result;
             }
-            stream.Should().Contain("endereco");//verifica se no json de retorno possui o parametro "endereco"
+            stream.Should().Contain("ProcessTime");//verifica se no json de retorno possui o parametro "endereco"
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
