@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Poc_Template_Domain.Model
 {
@@ -9,21 +10,22 @@ namespace Poc_Template_Domain.Model
         public Cliente(int id, int enderecoId, string nome)
         {
             Id = id;
-            AddressId = enderecoId;
-            Name = nome;
+            EnderecoId = enderecoId;
+            Nome = nome;
         }
 
         public Cliente(int enderecoId, string name)
         {
-            AddressId = enderecoId;
-            Name = name;
+            EnderecoId = enderecoId;
+            Nome = name;
         }
 
+        [Key]
         public int Id { get; private set; }
-        public int AddressId { get; set; }
-        public string Name { get; set; }
-        public DateTime DateCreated { get; private set; }
+        public int EnderecoId { get; set; }
+        public string Nome { get; set; }
         public bool Ativo { get; set; }
-        public Endereco Address { get; private set; }
+        public DateTime CriadoEm { get; set; }
+        public Endereco Endereco { get; private set; }
     }
 }

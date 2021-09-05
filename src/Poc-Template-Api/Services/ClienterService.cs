@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Poc_Template_Api.Services
 {
-    public class ClienterService : IClienteService
+    public class ClienteService : IClienteService
     {
         private readonly IClienteRepository _clienteRepository;
         private readonly IViaCEPService _viaCEPService;
         private readonly IMapper _mapper;
 
-        public ClienterService(IClienteRepository clienteRepository, IViaCEPService viaCEPService, IMapper mapper)
+        public ClienteService(IClienteRepository clienteRepository, IViaCEPService viaCEPService, IMapper mapper)
         {
             _clienteRepository = clienteRepository;
             _viaCEPService = viaCEPService;

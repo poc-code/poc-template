@@ -6,6 +6,12 @@ using Poc_Template_Api.Services;
 using Poc_Template_Api.Services.Interface;
 using Poc_Template_Domain.Interfaces.Repository;
 using Poc_Template_Infra.Repository;
+using Poc_Template_Infra.Context;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Data.SqlClient;
+using Poc_Template_Domain.Interfaces.Services;
+using Poc_Template_Infra.UoW;
 
 namespace Poc_Template_Api.Extensions
 {
@@ -14,21 +20,39 @@ namespace Poc_Template_Api.Extensions
     {
         public static void ConfigureIoC(
             this IServiceCollection services,
-            IConfiguration Configuration)
+            IConfiguration configuration)
         {
             AddServices(services);
             AddRepository(services);
+            AddInfraConfigurations(services, configuration);
+        }
+
+        private static void AddInfraConfigurations(this IServiceCollection services, IConfiguration Configuration)
+        {
+            services.AddDbContext<EntityContext>(options => options.UseSqlServer(Configuration.GetConnectionString("db")));
+
+            services.AddScoped<IDbConnection>(conn => new SqlConnection(Configuration.GetConnectionString("db")));
+            services.AddScoped<DapperContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         private static void AddServices(IServiceCollection services)
         {
-            services.AddScoped<IClienteService, ClienterService>();
+            services.AddScoped<IAcessoService, AcessoService>();
+            services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<IDiagnosticoAplicacaoService, DiagnosticoAplicacaoService>();
+            services.AddScoped<IEnderecoService, EnderecoService>();
+            services.AddScoped<IPerfilService, PerfilService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
         }
 
         private static void AddRepository(IServiceCollection services)
         {
+            services.AddScoped<IAcessoRepository, AcessoRepository>();
             services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+            services.AddScoped<IPerfilRepository, PerfilRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         }
     }
 }

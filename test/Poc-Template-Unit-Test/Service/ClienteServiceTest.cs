@@ -46,7 +46,7 @@ namespace Poc_Template_Unit_Test.Service
         [Fact]
         public async Task buscar_todos_cliente_enderecoAsync()
         {
-            var service = new ClienterService(_repository.Object, _viaCepService.Object, _mapper);
+            var service = new ClienteService(_repository.Object, _viaCepService.Object, _mapper);
             var teste = await service.BuscarTodosAsync();
 
             teste.Should().NotBeNull();
@@ -55,7 +55,7 @@ namespace Poc_Template_Unit_Test.Service
         [Fact]
         public async Task buscar_cliente_endereco_por_id_async()
         {
-            var service = new ClienterService(_repository.Object, _viaCepService.Object, _mapper);
+            var service = new ClienteService(_repository.Object, _viaCepService.Object, _mapper);
             var teste = await service.BuscarEnderecoPorIdAsync(new ClienteIdViewModel(1));
 
             teste.Should().NotBeNull();
@@ -64,7 +64,7 @@ namespace Poc_Template_Unit_Test.Service
         [Fact]
         public async Task buscar_cliente_por_id_async()
         {
-            var service = new ClienterService(_repository.Object, _viaCepService.Object, _mapper);
+            var service = new ClienteService(_repository.Object, _viaCepService.Object, _mapper);
             var teste = await service.BuscarPorIdAsync(new ClienteIdViewModel(1));
 
             teste.Should().NotBeNull();
@@ -73,7 +73,7 @@ namespace Poc_Template_Unit_Test.Service
         [Fact]
         public async Task buscar_cliente_por_nome_async()
         {
-            var service = new ClienterService(_repository.Object, _viaCepService.Object, _mapper);
+            var service = new ClienteService(_repository.Object, _viaCepService.Object, _mapper);
             var teste = await service.BuscarEnderecoPorNomeAsync(new ClienteNomeViewModel(It.IsAny<string>()));
 
             teste.Should().NotBeNull().And.BeOfType<ClienteEnderecoViewModel>();

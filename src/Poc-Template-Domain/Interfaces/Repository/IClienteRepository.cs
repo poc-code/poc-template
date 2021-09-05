@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace Poc_Template_Domain.Interfaces.Repository
 {
-    public interface IClienteRepository
+    public interface IClienteRepository : IEntityBaseRepository<Cliente>,
+        IDapperReadRepository<Cliente>
     {
         Task<IEnumerable<ClienteEndereco>> BuscarTodosAsync();
         Task<ClienteEndereco> BuscarEnderecoPorIdAsync(int id);

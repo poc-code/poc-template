@@ -65,7 +65,7 @@ namespace Poc_Template_Api.Middlewares
                         };
 
                         object objResponse = null;
-                        if (body.GetType() == typeof(object))
+                        //if (body.GetType() == typeof(object))
                         objResponse = JsonSerializer.Deserialize<object>(body, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                         var response = new ApiGenericResponse();

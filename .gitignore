@@ -128,3 +128,7 @@ test/Poc-Template-Unit-Test/obj/
 src/Poc-Template-Domain/bin/
 test/Poc-Template-Core-Test/bin/Debug/
 .vs/
+test/Poc-Template-Integration-Test/TestResults/
+test/Poc-Template-Unit-Test/TestResults/
+scripts/tools/
+scripts/

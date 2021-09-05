@@ -1,92 +1,70 @@
-﻿using Poc_Template_Domain.Dapper;
+﻿using Dapper;
+using Poc_Template_Domain.Dapper;
+using Poc_Template_Domain.Extensions;
 using Poc_Template_Domain.Interfaces.Repository;
 using Poc_Template_Domain.Model;
+using Poc_Template_Infra.Context;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Poc_Template_Infra.Repository
 {
-    public class ClienteRepository : IClienteRepository
+    public class ClienteRepository : EntityBaseRepository<Cliente>, IClienteRepository
     {
-        private List<ClienteEndereco> _clienteEndereco;
-        private List<Cliente> _clientes;
-
-        public ClienteRepository()
+        private readonly DapperContext _dapperContext;
+        public ClienteRepository(
+            EntityContext context,
+            DapperContext dapperContext
+        ) : base(context)
         {
-            _clientes = new List<Cliente>
-            {
-                new Cliente(1,1,"Joao Silva"),
-                new Cliente(2,1,"Maria Silva"),
-            };
-
-            _clienteEndereco = _clientes.Select(x => new ClienteEndereco(x.Id, 1, x.Name, x.DateCreated, "70150900")).ToList();
+            _dapperContext = dapperContext;
         }
+
 
         public async Task<ClienteEndereco> BuscarEnderecoPorIdAsync(int id)
         {
-            return await Task.FromResult(_clienteEndereco.FirstOrDefault(x => x.Id == id));
+            var query = $"{SqlExtensionFunction.SelectQuery<Cliente>()} Where Id = @Id And Ativo = 1";
+            var cliente = await _dapperContext.DapperConnection.QueryFirstOrDefaultAsync<Cliente>(query, new { Id = id });
+            
+            var result = new ClienteEndereco(cliente.Id, cliente.EnderecoId, cliente.Nome, cliente.CriadoEm, cliente.Endereco.CEP);
+            return result;
+        }
+
+        public async Task<Cliente> GetByIdAsync(int id)
+        {
+            var query = $"{SqlExtensionFunction.SelectQueryFirst<Cliente>()} Where Id = @Id And Ativo = 1";
+            return await _dapperContext.DapperConnection.QueryFirstAsync<Cliente>(query, new { Id = id });
         }
 
         public async Task<IEnumerable<ClienteEndereco>> BuscarTodosAsync()
         {
-            return await Task.FromResult(_clienteEndereco.ToList());
+            throw new NotImplementedException();
         }
 
         public async Task<Cliente> BuscarPorIdAsync(int id)
         {
-            return await Task.FromResult(_clientes.FirstOrDefault(x => x.Id == id));
+            throw new NotImplementedException();
         }
 
         public async Task<ClienteEndereco> BuscarPorNomeAsync(string name)
         {
-            return await Task.FromResult(_clienteEndereco.FirstOrDefault(x => x.Nome == name));
+            throw new NotImplementedException();
         }
 
         public async Task<Cliente> AdicionarAsync(Cliente cliente)
         {
-            Task<Cliente> tarefa = Task.Run(() => {
-                var id = _clientes.Max(x => x.Id) + 1;
-                
-                var addcliente = new Cliente(id, cliente.AddressId, cliente.Name);
-               
-                _clientes.Add(addcliente);
-                
-                return _clientes.FirstOrDefault(x => x.Id == id);
-            });
-
-            return await tarefa;
+            throw new NotImplementedException();
         }
 
         public async Task<Cliente> AlterarAsync(Cliente cliente)
         {
-            Task<Cliente> tarefa = Task.Run(() =>
-            {
-                var busca = _clientes.FirstOrDefault(x => x.Id == cliente.Id);
-                if (busca.Id > 0)
-                {
-                    busca.AddressId = cliente.AddressId;
-                    busca.Name = cliente.Name;
-                }
-
-                return busca;
-            });
-
-            return await tarefa;
+            throw new NotImplementedException();
         }
 
         public async Task<Cliente> RemoverAsync(Cliente cliente)
         {
-            Task<Cliente> tarefa = Task.Run(() =>
-            {
-                var busca = _clientes.FirstOrDefault(x => x.Id == cliente.Id);
-                if (busca.Id > 0) 
-                    _clientes.Remove(busca);
-
-                return busca;
-            });
-            return await tarefa;
+            throw new NotImplementedException();
         }
     }
 }
