@@ -6,6 +6,7 @@ using Poc_Template_Api;
 using Poc_Template_Api.ViewModel.Customer;
 using Poc_Template_Core_Test.Mock;
 using Poc_Template_Domain.Dapper;
+using Poc_Template_Domain.Entities;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -52,7 +53,7 @@ namespace Poc_Template_Integration_Test.Controllers
                 PropertyNameCaseInsensitive = true
             };
             var objeto = JsonSerializer.Deserialize<ClienteEnderecoViewModel>(jsonString, options);
-            objeto.Should().BeAssignableTo<ClienteEnderecoViewModel>();
+            objeto.Should().BeAssignableTo<Cliente>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -67,7 +68,7 @@ namespace Poc_Template_Integration_Test.Controllers
             {
                 PropertyNameCaseInsensitive = true
             };
-            var objeto = JsonSerializer.Deserialize<ClienteEnderecoViewModel>(jsonString, options);
+            var objeto = JsonSerializer.Deserialize<Cliente>(jsonString, options);
             objeto.Should().BeAssignableTo<ClienteEnderecoViewModel>();
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -85,7 +86,7 @@ namespace Poc_Template_Integration_Test.Controllers
         [Fact]
         public async Task Post_HttpStatusCodeCreateTestAsync()
         {
-            var Cliente = _autoFaker.Generate<ClienteEndereco>();
+            var Cliente = _autoFaker.Generate<Cliente>();
             var param = new StringContent(JsonSerializer.Serialize(Cliente), Encoding.UTF8, "application/json");
             
             var response = await _httpClient.PostAsync("/api/v1/clientes", param);

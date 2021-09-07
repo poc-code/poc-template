@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Poc_Template_Api.Services.Interface;
 using Poc_Template_Api.ViewModel.Customer;
+using Poc_Template_Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Poc_Template_Api.Controllers
         /// </summary>
         /// <returns>Clientes.</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClienteEnderecoViewModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ClienteViewModel>>> GetAll()
         {
             return Ok(await _clienteService.BuscarTodosAsync());
         }
@@ -34,9 +35,9 @@ namespace Poc_Template_Api.Controllers
         /// <param name="customer">Parâmetro "id" do cliente.</param>
         /// <returns>Cliente.</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<ClienteEnderecoViewModel>> GetById([FromQuery] ClienteIdViewModel customer)
+        public async Task<ActionResult<ClienteViewModel>> GetById([FromQuery] ClienteIdViewModel customer)
         {
-            var customerVM = await _clienteService.BuscarEnderecoPorIdAsync(customer);
+            var customerVM = await _clienteService.BuscarPorIdAsync(customer);
 
             if (customerVM == null)
             {
@@ -46,24 +47,7 @@ namespace Poc_Template_Api.Controllers
             return Ok(customerVM);
         }
 
-        /// <summary>
-        /// Cliente por nome.
-        /// </summary>
-        /// <param name="customer">Parâmetro "nome" do cliente.</param>
-        /// <returns>Cliente.</returns>
-        [HttpGet("nome/{nome}")]
-        public async Task<ActionResult<ClienteEnderecoViewModel>> GetByName([FromQuery] ClienteNomeViewModel customer)
-        {
-            var customerVM = await _clienteService.BuscarEnderecoPorNomeAsync(customer);
-
-            if (customerVM is null)
-            {
-                return NotFound();
-            }
-
-            return Ok(customerVM);
-        }
-
+        
         /// <summary>
         /// Criação de cliente.
         /// </summary>
@@ -72,7 +56,7 @@ namespace Poc_Template_Api.Controllers
         [HttpPost]
         public async Task<ActionResult<ClienteViewModel>> PostCustomer([FromBody] ClienteViewModel customer)
         {
-            return Created(nameof(GetByName), await _clienteService.AdicionarAsync(customer));
+            return Created(nameof(GetById), await _clienteService.AdicionarAsync(customer));
         }
 
         /// <summary>

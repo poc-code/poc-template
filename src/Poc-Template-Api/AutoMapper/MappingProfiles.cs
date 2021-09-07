@@ -1,8 +1,7 @@
-﻿using Poc_Template_Api.ViewModel.Customer;
-using Poc_Template_Domain.Dapper;
-using Poc_Template_Domain.Model;
+﻿using AutoMapper;
+using Poc_Template_Api.ViewModel.Customer;
+using Poc_Template_Domain.Entities;
 using System.Diagnostics.CodeAnalysis;
-using AutoMapper;
 
 namespace Poc_Template_Api.AutoMapper
 {
@@ -13,8 +12,6 @@ namespace Poc_Template_Api.AutoMapper
         {
             #region Cliente
 
-            CreateMap<ClienteEndereco, ClienteEnderecoViewModel>();
-            CreateMap<Cliente, ClienteViewModel>().ReverseMap();
             CreateMap<Cliente, ClienteViewModel>().ReverseMap();
 
             #endregion

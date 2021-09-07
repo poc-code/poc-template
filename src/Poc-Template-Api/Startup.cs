@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using Poc_Template_Api.Extensions;
+using Poc_Template_Api.Filters;
 using Poc_Template_Api.Middlewares;
 using System.Diagnostics.CodeAnalysis;
 
@@ -30,7 +31,15 @@ namespace Poc_Template_Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers(config =>
+            {
+                config.Filters.Add<DomainNotificationFilter>();
+                config.EnableEndpointRouting = false;
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.IgnoreNullValues = true;
+            }); 
+
             services.AddHttpClients(Configuration);
             services.ConfigureIoC(Configuration);
             services.AddAutoMapper(typeof(Startup));
@@ -59,12 +68,16 @@ namespace Poc_Template_Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Poc_Template v1"));
             }
 
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseResponseCompression();
+            app.UseExceptionHandler(new ExceptionHandlerOptions
+            {
+                ExceptionHandler = new ErrorHandlerMiddleware(env).Invoke
+            });
             app.UseMiddleware<ResponseTimeMiddleware>();
+            
 
             app.UseCors(builder => builder
              .SetIsOriginAllowedToAllowWildcardSubdomains()

@@ -50,7 +50,7 @@ namespace Poc_Template_Api.Middlewares
                     await _next.Invoke(context);
 
                     var verbsexcluds = new List<string> { "DELETE", "PUT" };
-                    if (verbsexcluds.Contains(context.Request.Method))
+                    if (verbsexcluds.Contains(context.Request.Method) || context.Response.ContentLength.HasValue)
                         return;
 
                     buffer.Seek(0, SeekOrigin.Begin);

@@ -3,6 +3,7 @@ using Poc_Template_Domain.Entities;
 using Poc_Template_Domain.Extensions;
 using Poc_Template_Domain.Interfaces.Repository;
 using Poc_Template_Infra.Context;
+using System;
 using System.Threading.Tasks;
 
 namespace Poc_Template_Infra.Repository
@@ -20,8 +21,16 @@ namespace Poc_Template_Infra.Repository
 
         public async Task<Usuario> GetByIdAsync(int id)
         {
-            var query = $"{SqlExtensionFunction.SelectQueryFirst<Usuario>()} Where Id = @Id";
-            return await _dapperContext.DapperConnection.QueryFirstAsync<Usuario>(query, new { Id = id });
+            try
+            {
+                var query = $"{SqlExtensionFunction.SelectQueryFirst<Usuario>()} Where Id = @Id";
+                return await _dapperContext.DapperConnection.QueryFirstOrDefaultAsync<Usuario>(query, new { Id = id });
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            
         }
     }
 }

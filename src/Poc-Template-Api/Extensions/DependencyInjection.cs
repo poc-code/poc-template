@@ -12,6 +12,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Poc_Template_Domain.Interfaces.Services;
 using Poc_Template_Infra.UoW;
+using Poc_Template_Domain.Interfaces.Notifications;
+using Poc_Template_Domain.Notifications;
 
 namespace Poc_Template_Api.Extensions
 {
@@ -38,6 +40,9 @@ namespace Poc_Template_Api.Extensions
 
         private static void AddServices(IServiceCollection services)
         {
+            #region Domain
+            services.AddScoped<IDomainNotification, DomainNotification>();
+            #endregion
             services.AddScoped<IAcessoService, AcessoService>();
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<IDiagnosticoAplicacaoService, DiagnosticoAplicacaoService>();
