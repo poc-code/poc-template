@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Poc_Template_Domain.Interfaces.Notifications;
-
+using System.Text.Encodings.Web;
 
 namespace Poc_Template_Api.Filters
 {
@@ -25,12 +25,19 @@ namespace Poc_Template_Api.Filters
         {
             if (!context.ModelState.IsValid || _domainNotification.HasNotifications)
             {
+
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                };
+
                 var validations = !context.ModelState.IsValid ?
                     JsonSerializer.Serialize(context.ModelState.Values
                         .SelectMany(x => x.Errors)
-                        .Select(x => x.ErrorMessage)) :
+                        .Select(x => x.ErrorMessage),options) :
                     JsonSerializer.Serialize(_domainNotification.Notifications
-                        .Select(x => x.Value));
+                        .Select(x => x.Value),options);
 
                 var problemDetails = new ProblemDetails
                 {
