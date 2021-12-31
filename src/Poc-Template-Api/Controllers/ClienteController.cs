@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Poc_Template_Api.Services.Interface;
 using Poc_Template_Api.ViewModel.Customer;
 using Poc_Template_Domain.Entities;
@@ -23,7 +24,10 @@ namespace Poc_Template_Api.Controllers
         /// Lista de clientes.
         /// </summary>
         /// <returns>Clientes.</returns>
+        /// <response code="200">Sucesso.</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<ClienteViewModel>>> GetAll()
         {
             return Ok(await _clienteService.BuscarTodosAsync());
@@ -34,7 +38,10 @@ namespace Poc_Template_Api.Controllers
         /// </summary>
         /// <param name="customer">Parâmetro "id" do cliente.</param>
         /// <returns>Cliente.</returns>
+        /// <response code="200">Sucesso.</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<ClienteViewModel>> GetById([FromQuery] ClienteIdViewModel customer)
         {
             var customerVM = await _clienteService.BuscarPorIdAsync(customer);
@@ -54,6 +61,8 @@ namespace Poc_Template_Api.Controllers
         /// <param name="customer">Parâmetro "cliente".</param>
         /// <returns>Cliente criado.</returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<ClienteViewModel>> PostCustomer([FromBody] ClienteViewModel customer)
         {
             return Created(nameof(GetById), await _clienteService.AdicionarAsync(customer));
@@ -66,6 +75,10 @@ namespace Poc_Template_Api.Controllers
         /// <param name="customer">Parâmetro "cliente".</param>
         /// <returns>Cliente atualizado.</returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> PutCustomer(int id, [FromBody] ClienteViewModel customer)
         {
             if (customer == null || customer.Id != id)
@@ -91,6 +104,9 @@ namespace Poc_Template_Api.Controllers
         /// <param name="customer">Parâmetro "id" do cliente.</param>
         /// <returns>Cliente excluido.</returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult> DeleteCustomer([FromQuery] ClienteIdViewModel customer)
         {
             var customerVM = await _clienteService.BuscarPorIdAsync(customer);

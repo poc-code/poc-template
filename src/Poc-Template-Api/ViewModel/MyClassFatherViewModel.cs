@@ -1,4 +1,6 @@
-﻿namespace Poc_Template_Api.ViewModel
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Poc_Template_Api.ViewModel
 {
     public class MyClassFatherViewModel
     {
@@ -8,8 +10,10 @@
             Nome = nome;
             Child = child;
         }
-
+        [Key]
         public int Id { get; set; }
+        [Required(ErrorMessage = "Nome é um campo obrigatório!")]
+        [Display(Name = "Nome do titular.")]
         public string Nome { get; set; }
         public MyClassChildViewModel Child { get; set; }
     }

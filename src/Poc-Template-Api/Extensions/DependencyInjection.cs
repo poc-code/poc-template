@@ -49,6 +49,7 @@ namespace Poc_Template_Api.Extensions
             services.AddScoped<IEnderecoService, EnderecoService>();
             services.AddScoped<IPerfilService, PerfilService>();
             services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IMyClassFatherService, MyClassFatherService>();
         }
 
         private static void AddRepository(IServiceCollection services)
