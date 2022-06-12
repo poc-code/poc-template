@@ -54,7 +54,19 @@ namespace Poc_Template_Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Poc-Template-RestApi", Version = "v1" });
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Description = "Template de arquitetura de Api-Rest",
+                        Title = "Poc-Template-RestApi",
+                        Version = "v1",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Uirá Peixoto",
+                            Email = "uira.peixoto@gmail.com",
+                            Url = new System.Uri("https://uira.com.br")
+                        }
+                    });
             });
         }
 

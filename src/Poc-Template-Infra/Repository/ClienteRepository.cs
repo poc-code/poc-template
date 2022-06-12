@@ -34,7 +34,7 @@ namespace Poc_Template_Infra.Repository
             var query = $"{SqlExtensionFunction.SelectQueryFirst<Cliente>()} " +
                 $"Where Id = @Id  And Ativo = 1";
             var result = await _dapperContext
-                .DapperConnection.QueryFirstAsync<Cliente>(query, new { Id = id });
+                .DapperConnection.QueryFirstOrDefaultAsync<Cliente>(query, new { Id = id });
             return result;
         }
     }

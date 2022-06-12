@@ -21,7 +21,7 @@ namespace Poc_Template_Infra.Repository
         public async Task<Perfil> GetByIdAsync(int id)
         {
             var query = $"{SqlExtensionFunction.SelectQueryFirst<Perfil>()} Where Id = @Id And Ativo = 1";
-            return await _dapperContext.DapperConnection.QueryFirstAsync<Perfil>(query, new { Id = id });
+            return await _dapperContext.DapperConnection.QueryFirstOrDefaultAsync<Perfil>(query, new { Id = id });
         }
     }
 }

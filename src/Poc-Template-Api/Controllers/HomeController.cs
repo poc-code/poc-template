@@ -59,9 +59,8 @@ namespace Poc_Template_Api.Controllers
             return Ok(_service.GetAll());
         }
 
-        /// <summary>
-        /// Criação de cliente.
-        /// </summary>
+        /// <summary>Criação de cliente.</summary>
+        /// <remarks>Implementação sem validação</remarks>
         /// <param name="myClassFather">Parâmetro "cliente".</param>
         /// <returns>Cliente criado.</returns>
         /// <response code="201">Sucesso.</response>

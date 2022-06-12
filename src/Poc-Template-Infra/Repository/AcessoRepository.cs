@@ -24,7 +24,7 @@ namespace Poc_Template_Infra.Repository
             {
                 var query = $"{SqlExtensionFunction.SelectQueryFirst<Acesso>()} " +
                 $"Where Username = @NomeUsuario And Password = @Senha";
-                var acesso = await _dapperContext.DapperConnection.QueryFirstAsync<Acesso>(query, new { NomeUsuario = data.Username, Senha = data.Password });
+                var acesso = await _dapperContext.DapperConnection.QueryFirstOrDefaultAsync<Acesso>(query, new { NomeUsuario = data.Username, Senha = data.Password });
 
                 var queryusuario = $"{SqlExtensionFunction.SelectQueryFirst<Usuario>()} " +
                     $"Where Id = @UsuarioId";

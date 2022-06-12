@@ -1,17 +1,19 @@
-﻿using Poc_Template_Core_Test.Mock;
+﻿using FluentAssertions;
+using Poc_Template_Core_Test.Mock;
 using Poc_Template_Domain.Entities;
 using Poc_Template_Infra.Repository;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Poc_Template_Integration_Test.Repository
 {
-    public class ClienteRepositoryTest : BaseRepositoryTest<Cliente>
+    public class PerfilRepositoryTest : BaseRepositoryTest<Perfil>
     {
-        private ClienteRepository _repository;
+        private PerfilRepository _repository;
 
-        public ClienteRepositoryTest() : base(ClienteMock.ClienteFaker.Generate(10))
+        public PerfilRepositoryTest() : base(PerfilMock.Fake.Generate(10))
         {
-            _repository = new ClienteRepository(EntityContextMock, DapperContextMock);
+            _repository = new PerfilRepository(EntityContextMock, DapperContextMock);
         }
 
         [Fact]
@@ -32,17 +34,10 @@ namespace Poc_Template_Integration_Test.Repository
         }
 
         [Fact]
-        public void BuscarTodosAsync_Successo()
+        public async Task GetByIdAsync_Sucesso()
         {
-            var rs = _repository.BuscarTodosAsync();
-            Assert.NotNull(rs);
-        }
-
-        [Fact]
-        public void GetByIdAsync_Sucesso()
-        {
-            var rs = _repository.GetByIdAsync(1);
-            Assert.NotNull(rs);
+            var rs = await _repository.GetByIdAsync(1);
+            rs.Should().NotBeNull().And.BeAssignableTo<Perfil>();
         }
     }
 }

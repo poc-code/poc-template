@@ -1,12 +1,9 @@
 ﻿using AutoBogus;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Moq;
 using Poc_Template_Api;
 using Poc_Template_Api.ViewModel.Customer;
 using Poc_Template_Core_Test.Mock;
-using Poc_Template_Domain.Dapper;
-using Poc_Template_Domain.Entities;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -31,14 +28,14 @@ namespace Poc_Template_Integration_Test.Controllers
         public async Task BuscarTodos_HttpStatusCodeOkTestAsync()
         {
             var stream = string.Empty;
-            var response = await _httpClient.GetAsync("/api/v1/clientes",HttpCompletionOption.ResponseHeadersRead);
-            response.EnsureSuccessStatusCode();
-            if (response.Content is object)
-            {
-                stream = response.Content.ReadAsStringAsync().Result;
-            }
-            stream.Should().Contain("ProcessTime");//verifica se no json de retorno possui o parametro "endereco"
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                var response = await _httpClient.GetAsync("/api/v1/clientes",HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
+                if (response.Content is object)
+                {
+                    stream = response.Content.ReadAsStringAsync().Result;
+                }
+                stream.Should().Contain("ProcessTime");//verifica se no json de retorno possui o parametro "endereco"
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
@@ -52,8 +49,8 @@ namespace Poc_Template_Integration_Test.Controllers
             {
                 PropertyNameCaseInsensitive = true
             };
-            var objeto = JsonSerializer.Deserialize<ClienteEnderecoViewModel>(jsonString, options);
-            objeto.Should().BeAssignableTo<Cliente>();
+            var objeto = JsonSerializer.Deserialize<ClienteViewModel>(jsonString, options);
+            objeto.Should().BeAssignableTo<ClienteViewModel>();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -68,26 +65,16 @@ namespace Poc_Template_Integration_Test.Controllers
             {
                 PropertyNameCaseInsensitive = true
             };
-            var objeto = JsonSerializer.Deserialize<Cliente>(jsonString, options);
-            objeto.Should().BeAssignableTo<ClienteEnderecoViewModel>();
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        }
-
-        [Fact]
-        public async Task BuscarPorNome_HttpStatusCodeNotFoundTestAsync()
-        {
-            var nome = "Meu Teste";
-
-            var response = await _httpClient.GetAsync($"api/v1/clientes/nome/{nome}");
-            
+            var objeto = JsonSerializer.Deserialize<ClienteViewModel>(jsonString, options);
+            objeto.Should().BeAssignableTo<ClienteViewModel>();
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact]
         public async Task Post_HttpStatusCodeCreateTestAsync()
         {
-            var Cliente = _autoFaker.Generate<Cliente>();
-            var param = new StringContent(JsonSerializer.Serialize(Cliente), Encoding.UTF8, "application/json");
+            var cliente = _autoFaker.Generate<ClienteViewModel>();
+            var param = new StringContent(JsonSerializer.Serialize(cliente), Encoding.UTF8, "application/json");
             
             var response = await _httpClient.PostAsync("/api/v1/clientes", param);
 
